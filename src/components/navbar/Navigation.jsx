@@ -6,18 +6,18 @@ const Navigation = () => {
   const history = useHistory();
   return (
     <Navbar fixed="top" collapseOnSelect expand="lg" bg="dark" variant="dark">
-      <Navbar.Brand href="#home">React-Bootstrap</Navbar.Brand>
+      <Navbar.Brand>React </Navbar.Brand>
       <Navbar.Toggle aria-controls="responsive-navbar-nav" />
       <Navbar.Collapse id="responsive-navbar-nav">
         <Nav className="mr-auto">
-          <Nav.Link>
-            <Link to="/movies">Movies</Link>
+          <Nav.Link as={Link} to="/movies">
+            Movies
           </Nav.Link>
-          <Nav.Link>
-            <Link to="/books">Books</Link>
+          <Nav.Link as={Link} to="/books">
+            Books
           </Nav.Link>
-          <Nav.Link>
-            <Link to="/people">People</Link>
+          <Nav.Link as={Link} to="/people">
+            People
           </Nav.Link>
 
           <Nav.Link
