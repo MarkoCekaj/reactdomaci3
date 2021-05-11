@@ -1,0 +1,12 @@
+.movieUpdateInput {
+  display: flex;
+  flex-direction: column;
+  width: 50%;
+  margin: auto;
+  margin-top: 20px;
+}
+.moviesUpdateButtons {
+  display: flex;
+  justify-content: center;
+  margin: 10px auto;
+}

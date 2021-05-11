@@ -1,0 +1,11 @@
+.booksUpdateInput {
+  display: flex;
+  flex-direction: column;
+  width: 50%;
+  margin: auto;
+  margin-top: 20px;
+}
+.booksUpdateButtons {
+  display: flex;
+  justify-content: center;
+}
