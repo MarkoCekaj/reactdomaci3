@@ -1,27 +1,24 @@
 import React from "react";
 import Table from "react-bootstrap/Table";
-const TableContent = ({ header, rows, onRowClick, onRowDelete }) => {
+const TableContent = ({ headers = [], rows = [] }) => {
   return (
-    <Table striped bordered hover>
+    <Table striped bordered hover responsive="xl">
       <thead>
         <tr>
-          {Array.isArray(header) &&
-            header.map((item, index) => {
-              return <th key={index}>{item}</th>;
-            })}
+          {headers?.length &&
+            headers.map((item, index) => <th key={index}>{item}</th>)}
         </tr>
       </thead>
       <tbody>
-        {Array.isArray(rows) &&
-          rows.map((row) => {
-            return (
-              <tr key={row?.id} onClick={() => onRowClick(row)}>
-                {Object.values(row).map((item, index) => (
-                  <td key={index}>{item}</td>
-                ))}
-              </tr>
-            );
-          })}
+        {rows.map((item) => {
+          return (
+            <tr key={item?.id}>
+              {Object.values(item).map((data, index) => (
+                <td key={index}>{data}</td>
+              ))}
+            </tr>
+          );
+        })}
       </tbody>
     </Table>
   );
