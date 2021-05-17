@@ -12,7 +12,7 @@ const PrivateRoute = ({ component: Component, isPrivate, ...rest }) => {
       {...rest}
       component={() => {
         return isPrivate ? (
-          localStorage.getItem("role") ? (
+          localStorage.getItem("jwt-token") ? (
             <Layout>
               <Component {...rest} />
             </Layout>
