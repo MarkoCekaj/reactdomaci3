@@ -25,7 +25,6 @@ const MovieEdit = () => {
   const [formData, setFormData] = useState({});
   const history = useHistory();
   const onSubmit = () => {
-
     if (id !== "add") {
       editMovie(formData)
         .then((r) => {
@@ -124,7 +123,7 @@ const MovieEdit = () => {
             }
 
           />
-          <Alert variant="danger" >{errors?.name?.message}</Alert >
+          {errors?.name?.message ? <Alert variant="danger">Required field</Alert> : null}
         </Form.Group>
         <Form.Group controlId="formBasicUsername">
           <Form.Label>Rating</Form.Label>
