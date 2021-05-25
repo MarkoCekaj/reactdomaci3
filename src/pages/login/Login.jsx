@@ -3,6 +3,9 @@ import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import { useHistory } from "react-router-dom";
 import { login } from "../../services/account";
+import { Route, Link } from 'react-router-dom'
+import Register from "../register/Register";
+
 
 const Login = () => {
   const history = useHistory();
@@ -86,6 +89,7 @@ const Login = () => {
       <Button onClick={(e) => onSubmit(e)} variant="primary" type="submit">
         Submit
       </Button>
+      <Link to="/register">Register</Link>
     </Form>
   );
 };
