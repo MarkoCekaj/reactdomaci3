@@ -1,28 +1,33 @@
-import React, {
-  useState,
-
-  useEffect,
-} from "react";
-
+import React, { useState, useEffect } from "react";
 import Button from "react-bootstrap/Button";
 import { useHistory, useParams } from "react-router";
 import Form from "react-bootstrap/Form";
 import { useForm } from 'react-hook-form'
 import "./style/MoviesStyle.css";
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as Yup from 'yup';
 import { addMovie, editMovie, getMovie } from "../../services/movies";
-import Alert from 'react-bootstrap/Alert'
 const initialData = {
   id: 0,
   directorName: "",
-  duration: 0,
+  duration: "",
   name: "",
-  rating: 0,
+  rating: "",
   writerName: "",
 };
 const MovieEdit = () => {
-  const { register, handleSubmit, formState: { errors } } = useForm();
+  const validationSchema = Yup.object().shape({
+    directorName: Yup.string().required("Director Name is required"),
+    duration: Yup.number().required("Duration is required"),
+    name: Yup.string().required("Name is required"),
+    rating: Yup.number().required("rating is required"),
+    writerName: Yup.string().required("Writer name is required")
+  })
+  const formOptions = { resolver: yupResolver(validationSchema) }
+  const { register, handleSubmit, formState } = useForm(formOptions);
+  const { errors } = formState
   const { id } = useParams();
-  const [formData, setFormData] = useState({});
+  const [formData, setFormData] = useState(initialData);
   const history = useHistory();
   const onSubmit = () => {
     if (id !== "add") {
@@ -59,12 +64,8 @@ const MovieEdit = () => {
           <Form.Control
             type="text"
             placeholder="Enter Director"
-            {...register("directorName", {
-              required: {
-                value: true,
-                message: "Required field !"
-              }
-            })}
+            className={`form-control ${errors.directorName ? 'is-invalid' : ''}`}
+            {...register('directorName')}
             value={formData?.directorName}
             onChange={(e) =>
               setFormData((prevState) => {
@@ -75,19 +76,15 @@ const MovieEdit = () => {
               })
             }
           />
-          {errors?.directorName?.message ? <Alert variant="danger">Required field</Alert> : null}
+          <div className="invalid-feedback">{errors.directorName?.message}</div>
         </Form.Group>
         <Form.Group controlId="formBasicUsername">
           <Form.Label>Duration</Form.Label>
           <Form.Control
             type="number"
             placeholder="Enter Duration"
-            {...register("duration", {
-              required: {
-                value: true,
-                message: "Required field !"
-              }
-            })}
+            className={`form-control ${errors.duration ? 'is-invalid' : ''}`}
+            {...register('duration')}
             value={formData?.duration}
             onChange={(e) =>
               setFormData((prevState) => {
@@ -99,19 +96,15 @@ const MovieEdit = () => {
             }
           />
 
-          {errors?.duration?.message ? <Alert variant="danger">Required field</Alert> : null}
+          <div className="invalid-feedback">{errors.duration?.message}</div>
         </Form.Group>
         <Form.Group controlId="formBasicUsername">
           <Form.Label>Name</Form.Label>
           <Form.Control
             type="text"
             placeholder="Enter Name"
-            {...register("name", {
-              required: {
-                value: true,
-                message: "Required field !"
-              }
-            })}
+            className={`form-control ${errors.name ? 'is-invalid' : ''}`}
+            {...register('name')}
             value={formData?.name}
             onChange={(e) =>
               setFormData((prevState) => {
@@ -123,19 +116,15 @@ const MovieEdit = () => {
             }
 
           />
-          {errors?.name?.message ? <Alert variant="danger">Required field</Alert> : null}
+          <div className="invalid-feedback">{errors.name?.message}</div>
         </Form.Group>
         <Form.Group controlId="formBasicUsername">
           <Form.Label>Rating</Form.Label>
           <Form.Control
             type="number"
             placeholder="Enter rating"
-            {...register("rating", {
-              required: {
-                value: true,
-                message: "Required field !"
-              }
-            })}
+            className={`form-control ${errors.rating ? 'is-invalid' : ''}`}
+            {...register('rating')}
             value={formData?.rating}
             onChange={(e) =>
               setFormData((prevState) => {
@@ -146,19 +135,15 @@ const MovieEdit = () => {
               })
             }
           />
-          {errors?.rating?.message ? <Alert variant="danger">Required field</Alert> : null}
+          <div className="invalid-feedback">{errors.rating?.message}</div>
         </Form.Group>
         <Form.Group controlId="formBasicUsername">
           <Form.Label>Writer Name</Form.Label>
           <Form.Control
             type="text"
             placeholder="Enter Writer Name"
-            {...register("writerName", {
-              required: {
-                value: true,
-                message: "Required field !"
-              }
-            })}
+            className={`form-control ${errors.writerName ? 'is-invalid' : ''}`}
+            {...register('writerName')}
             value={formData?.writerName}
             onChange={(e) =>
               setFormData((prevState) => {
@@ -169,9 +154,8 @@ const MovieEdit = () => {
               })
             }
           />
-          {errors?.writerName?.message ? <Alert variant="danger">Required field</Alert> : null}
+          <div className="invalid-feedback">{errors.writerName?.message}</div>
         </Form.Group>
-
         <Button variant="primary" type="submit">
           Add
         </Button>

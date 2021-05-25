@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
-// import BooksData from "../../context/booksContext/BooksData";
 import Button from "react-bootstrap/Button";
 import "./style/BooksStyle.css";
 import { useHistory, useParams } from "react-router";
 import { addBook, editBook, getBooks } from "../../services/books";
 import { useForm } from 'react-hook-form'
 import Form from "react-bootstrap/Form";
-import Alert from 'react-bootstrap/Alert'
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as Yup from 'yup';
 const initialData = {
   id: 0,
   isbn: "",
@@ -16,9 +16,18 @@ const initialData = {
   genre: "",
 };
 const BookEdit = () => {
-  const { register, handleSubmit, formState: { errors } } = useForm();
+  const validationSchema = Yup.object().shape({
+    isbn: Yup.string().required("Isbn is required"),
+    writerName: Yup.string().required("Writer Name is required"),
+    publisherName: Yup.string().required("Publisher Name is required"),
+    publishedDate: Yup.string().required("Published date is required").matches(/^\d{4}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])$/, 'Published date must be a valid date in the format YYYY-MM-DD'),
+    genre: Yup.string().required("Genre name is required")
+  })
+  const formOptions = { resolver: yupResolver(validationSchema) }
+  const { register, handleSubmit, formState } = useForm(formOptions);
+  const { errors } = formState
   const { id } = useParams();
-  const [formData, setFormData] = useState({});
+  const [formData, setFormData] = useState(initialData);
   const history = useHistory();
   const onSubmit = () => {
 
@@ -61,13 +70,9 @@ const BookEdit = () => {
           <Form.Control
             type="text"
             name="isbn"
+            className={`form-control ${errors.isbn ? 'is-invalid' : ''}`}
             placeholder="Enter ISBN"
-            {...register("isbn", {
-              required: {
-                value: true,
-                message: "Required field !"
-              }
-            })}
+            {...register('isbn')}
             value={formData?.isbn}
             onChange={(e) =>
               setFormData((prevState) => {
@@ -78,20 +83,16 @@ const BookEdit = () => {
               })
             }
           />
-          {errors?.isbn?.message ? <Alert variant="danger">Required field</Alert> : null}
+          <div className="invalid-feedback">{errors.isbn?.message}</div>
         </Form.Group>
         <Form.Group controlId="formBasicUsername">
           <Form.Label>Writer Name</Form.Label>
           <Form.Control
             type="text"
             name="writerName"
+            className={`form-control ${errors.writerName ? 'is-invalid' : ''}`}
             placeholder="Enter Writer Name"
-            {...register("writerName", {
-              required: {
-                value: true,
-                message: "Required field !"
-              }
-            })}
+            {...register('writerName')}
             value={formData?.writerName}
             onChange={(e) =>
               setFormData((prevState) => {
@@ -102,20 +103,17 @@ const BookEdit = () => {
               })
             }
           />
+          <div className="invalid-feedback">{errors.writerName?.message}</div>
         </Form.Group>
-        {errors?.writerName?.message ? <Alert variant="danger">Required field</Alert> : null}
+
         <Form.Group controlId="formBasicUsername">
           <Form.Label>Publisher Name</Form.Label>
           <Form.Control
             type="text"
             name="publisherName"
+            className={`form-control ${errors.publisherName ? 'is-invalid' : ''}`}
             placeholder="Enter Publisher name"
-            {...register("publisherName", {
-              required: {
-                value: true,
-                message: "Required field !"
-              }
-            })}
+            {...register('publisherName')}
             value={formData?.publisherName}
             onChange={(e) =>
               setFormData((prevState) => {
@@ -126,20 +124,16 @@ const BookEdit = () => {
               })
             }
           />
-          {errors?.publisherName?.message ? <Alert variant="danger">Required field</Alert> : null}
+          <div className="invalid-feedback">{errors.publisherName?.message}</div>
         </Form.Group>
         <Form.Group controlId="formBasicUsername">
           <Form.Label>Published Date</Form.Label>
           <Form.Control
             type="date"
             name="publishedDate"
+            className={`form-control ${errors.publishedDate ? 'is-invalid' : ''}`}
             placeholder="Enter Published date"
-            {...register("publishedDate", {
-              required: {
-                value: true,
-                message: "Required field !"
-              }
-            })}
+            {...register('publishedDate')}
             value={formData?.publishedDate}
             onChange={(e) =>
               setFormData((prevState) => {
@@ -150,20 +144,17 @@ const BookEdit = () => {
               })
             }
           />
+          <div className="invalid-feedback">{errors.publishedDate?.message}</div>
         </Form.Group>
-        {errors?.publishedDate?.message ? <Alert variant="danger">Required field</Alert> : null}
+
         <Form.Group controlId="formBasicUsername">
           <Form.Label>Genre</Form.Label>
           <Form.Control
             type="text"
             placeholder="Enter Genre"
+            className={`form-control ${errors.genre ? 'is-invalid' : ''}`}
             name="genre"
-            {...register("genre", {
-              required: {
-                value: true,
-                message: "Required field !"
-              }
-            })}
+            {...register('genre')}
             value={formData?.genre}
             onChange={(e) =>
               setFormData((prevState) => {
@@ -174,8 +165,9 @@ const BookEdit = () => {
               })
             }
           />
+          <div className="invalid-feedback">{errors.genre?.message}</div>
         </Form.Group>
-        {errors?.genre?.message ? <Alert variant="danger">Required field</Alert> : null}
+
         <Button variant="primary" type="submit">
           Add
         </Button>
