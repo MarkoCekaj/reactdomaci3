@@ -60,6 +60,7 @@ const BookEdit = () => {
           <Form.Label>ISBN</Form.Label>
           <Form.Control
             type="text"
+            name="isbn"
             placeholder="Enter ISBN"
             {...register("isbn", {
               required: {
@@ -83,6 +84,7 @@ const BookEdit = () => {
           <Form.Label>Writer Name</Form.Label>
           <Form.Control
             type="text"
+            name="writerName"
             placeholder="Enter Writer Name"
             {...register("writerName", {
               required: {
@@ -106,6 +108,7 @@ const BookEdit = () => {
           <Form.Label>Publisher Name</Form.Label>
           <Form.Control
             type="text"
+            name="publisherName"
             placeholder="Enter Publisher name"
             {...register("publisherName", {
               required: {
@@ -129,6 +132,7 @@ const BookEdit = () => {
           <Form.Label>Published Date</Form.Label>
           <Form.Control
             type="date"
+            name="publishedDate"
             placeholder="Enter Published date"
             {...register("publishedDate", {
               required: {
@@ -153,6 +157,7 @@ const BookEdit = () => {
           <Form.Control
             type="text"
             placeholder="Enter Genre"
+            name="genre"
             {...register("genre", {
               required: {
                 value: true,
