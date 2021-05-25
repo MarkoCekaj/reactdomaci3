@@ -9,8 +9,11 @@ import MoviesForm from "./pages/movies/MoviesForm";
 import BooksForm from "./pages/books/BooksForm";
 import PeopleForm from "./pages/people/PeopleForm";
 import PrivateRoute from "./privateRoute/PrivateRoute";
+import { QueryClient, QueryClientProvider } from "react-query";
+import Register from "./pages/register/Register";
 function App() {
   return (
+
     <div className="App">
       <Switch>
         <Route exact path="/" component={Login}></Route>
@@ -20,8 +23,10 @@ function App() {
         <PrivateRoute path="/movies/:id" exact component={MoviesForm} />
         <PrivateRoute path="/people" exact component={People} isPrivate />
         <PrivateRoute path="/people/:id" exact component={PeopleForm} />
+        <PrivateRoute path="/register" exact component={Register} />
       </Switch>
     </div>
+
   );
 }
 
