@@ -6,3 +6,10 @@ export const login = (data) => {
     data: data,
   });
 };
+export const register = (data) => {
+  return axios({
+    method: "post",
+    url: "http://localhost:8080/api/register",
+    data: data,
+  })
+}
