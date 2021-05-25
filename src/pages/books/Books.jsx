@@ -110,45 +110,10 @@ const Books = () => {
         console.log(err);
       });
   }, [history, refresh]);
-  // const [isGridInView, setIsGridInView] = useState(true);
-  // const [bookList, dispatch] = useReducer(changeBooks, booksList);
-  // const [selectedRow, setSelectedRow] = useState({});
-  // const onRowClick = (e) => {
-  //   setSelectedRow(e);
-  //   setIsGridInView(false);
-  // };
+
 
   return (
-    // <BooksData.Provider
-    //   value={{ list: bookList, dispatch: (e) => dispatch(e) }}
-    // >
-    //   <div>
-    //     <div className="booksUpdateButtons">
-    //       <div>
-    //         <Button onClick={() => setIsGridInView(true)}>Show books</Button>
-    //       </div>
-    //       <div>
-    //         <Button onClick={() => setIsGridInView(false)}>Add book</Button>
-    //       </div>
-    //       <div onClick={() => setIsGridInView(false)}>
-    //         <Button>Update book</Button>
-    //       </div>
-    //     </div>
-    //     <div>
-    //       {isGridInView ? (
-    //         <BooksGrid onRowClick={onRowClick} />
-    //       ) : (
-    //         <BooksForm
-    //           returnToGrid={() => {
-    //             setIsGridInView(true);
-    //             setSelectedRow({});
-    //           }}
-    //           data={selectedRow}
-    //         />
-    //       )}
-    //     </div>
-    //   </div>
-    // </BooksData.Provider>
+
     <div>
       <Modal show={modalOpen} onHide={() => setModalOpen(false)}>
         <Modal.Header closeButton>
