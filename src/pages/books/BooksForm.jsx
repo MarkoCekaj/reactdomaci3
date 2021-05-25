@@ -4,22 +4,9 @@ import Button from "react-bootstrap/Button";
 import "./style/BooksStyle.css";
 import { useHistory, useParams } from "react-router";
 import { addBook, editBook, getBooks } from "../../services/books";
+import { useForm } from 'react-hook-form'
 import Form from "react-bootstrap/Form";
-// const Form = ({ returnToGrid, data }) => {
-//   const { dispatch } = useContext(BooksData);
-//   const [title, setTitle] = useState(data?.title ? data?.title : "");
-//   const [year, setYear] = useState(data?.year ? data?.year : 2010);
-//   const onSave = () => {
-//     if (data?.id) {
-//       dispatch({
-//         type: "edit",
-//         data: { id: data?.id, name: title, year: year },
-//       });
-//     } else {
-//       dispatch({ type: "add", data: { name: title, year: year } });
-//     }
-//     returnToGrid();
-//   };
+import Alert from 'react-bootstrap/Alert'
 const initialData = {
   id: 0,
   isbn: "",
@@ -29,11 +16,12 @@ const initialData = {
   genre: "",
 };
 const BookEdit = () => {
+  const { register, handleSubmit, formState: { errors } } = useForm();
   const { id } = useParams();
   const [formData, setFormData] = useState({});
   const history = useHistory();
-  const onSubmit = (e) => {
-    e.preventDefault();
+  const onSubmit = () => {
+
     if (id !== "add") {
       editBook(formData)
         .then((r) => {
@@ -53,7 +41,9 @@ const BookEdit = () => {
         });
     }
   };
-
+  const onError = (errors) => {
+    console.log(errors)
+  }
   useEffect(() => {
     if (id !== "add") {
       getBooks(id).then((r) => {
@@ -64,25 +54,19 @@ const BookEdit = () => {
   }, [id]);
   return (
     <div className="booksUpdateInput">
-      {/* <input
-        type="text"
-        placeholder="Name"
-        value={title}
-        onChange={(e) => setTitle(e.target.value)}
-      />
-      <input
-        type="number"
-        placeholder="year"
-        value={year}
-        onChange={(e) => setYear(e.target.value)}
-      />
-      <Button onClick={() => onSave()}>Save</Button> */}
-      <Form>
+
+      <Form onSubmit={handleSubmit(onSubmit, onError)}>
         <Form.Group controlId="formBasicUsername">
           <Form.Label>ISBN</Form.Label>
           <Form.Control
             type="text"
             placeholder="Enter ISBN"
+            {...register("isbn", {
+              required: {
+                value: true,
+                message: "Required field !"
+              }
+            })}
             value={formData?.isbn}
             onChange={(e) =>
               setFormData((prevState) => {
@@ -93,12 +77,19 @@ const BookEdit = () => {
               })
             }
           />
+          {errors?.isbn?.message ? <Alert variant="danger">Required field</Alert> : null}
         </Form.Group>
         <Form.Group controlId="formBasicUsername">
           <Form.Label>Writer Name</Form.Label>
           <Form.Control
             type="text"
             placeholder="Enter Writer Name"
+            {...register("writerName", {
+              required: {
+                value: true,
+                message: "Required field !"
+              }
+            })}
             value={formData?.writerName}
             onChange={(e) =>
               setFormData((prevState) => {
@@ -110,11 +101,18 @@ const BookEdit = () => {
             }
           />
         </Form.Group>
+        {errors?.writerName?.message ? <Alert variant="danger">Required field</Alert> : null}
         <Form.Group controlId="formBasicUsername">
           <Form.Label>Publisher Name</Form.Label>
           <Form.Control
             type="text"
             placeholder="Enter Publisher name"
+            {...register("publisherName", {
+              required: {
+                value: true,
+                message: "Required field !"
+              }
+            })}
             value={formData?.publisherName}
             onChange={(e) =>
               setFormData((prevState) => {
@@ -125,12 +123,19 @@ const BookEdit = () => {
               })
             }
           />
+          {errors?.publisherName?.message ? <Alert variant="danger">Required field</Alert> : null}
         </Form.Group>
         <Form.Group controlId="formBasicUsername">
           <Form.Label>Published Date</Form.Label>
           <Form.Control
             type="date"
             placeholder="Enter Published date"
+            {...register("publishedDate", {
+              required: {
+                value: true,
+                message: "Required field !"
+              }
+            })}
             value={formData?.publishedDate}
             onChange={(e) =>
               setFormData((prevState) => {
@@ -142,11 +147,18 @@ const BookEdit = () => {
             }
           />
         </Form.Group>
+        {errors?.publishedDate?.message ? <Alert variant="danger">Required field</Alert> : null}
         <Form.Group controlId="formBasicUsername">
           <Form.Label>Genre</Form.Label>
           <Form.Control
             type="text"
             placeholder="Enter Genre"
+            {...register("genre", {
+              required: {
+                value: true,
+                message: "Required field !"
+              }
+            })}
             value={formData?.genre}
             onChange={(e) =>
               setFormData((prevState) => {
@@ -158,7 +170,8 @@ const BookEdit = () => {
             }
           />
         </Form.Group>
-        <Button variant="primary" type="submit" onClick={(e) => onSubmit(e)}>
+        {errors?.genre?.message ? <Alert variant="danger">Required field</Alert> : null}
+        <Button variant="primary" type="submit">
           Add
         </Button>
       </Form>

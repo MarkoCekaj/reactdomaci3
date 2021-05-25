@@ -1,14 +1,16 @@
 import React, {
   useState,
-  // useContext
+
   useEffect,
 } from "react";
-// import MoviesData from "../../context/movieContext/MoviesData";
+
 import Button from "react-bootstrap/Button";
 import { useHistory, useParams } from "react-router";
 import Form from "react-bootstrap/Form";
+import { useForm } from 'react-hook-form'
 import "./style/MoviesStyle.css";
 import { addMovie, editMovie, getMovie } from "../../services/movies";
+import Alert from 'react-bootstrap/Alert'
 const initialData = {
   id: 0,
   directorName: "",
@@ -17,27 +19,13 @@ const initialData = {
   rating: 0,
   writerName: "",
 };
-// const MoviesForm = ({ returnToGrid, data }) => {
-//   const { dispatch } = useContext(MoviesData);
-//   const [title, setTitle] = useState(data?.title ? data?.title : "");
-//   const [year, setYear] = useState(data?.year ? data?.year : 2010);
-//   const onSave = () => {
-//     if (data?.id) {
-//       dispatch({
-//         type: "edit",
-//         data: { id: data?.id, name: title, year: year },
-//       });
-//     } else {
-//       dispatch({ type: "add", data: { name: title, year: year } });
-//     }
-//     returnToGrid();
-//   };
 const MovieEdit = () => {
+  const { register, handleSubmit, formState: { errors } } = useForm();
   const { id } = useParams();
   const [formData, setFormData] = useState({});
   const history = useHistory();
-  const onSubmit = (e) => {
-    e.preventDefault();
+  const onSubmit = () => {
+
     if (id !== "add") {
       editMovie(formData)
         .then((r) => {
@@ -53,6 +41,9 @@ const MovieEdit = () => {
       });
     }
   };
+  const onError = (errors) => {
+    console.log(errors)
+  }
   useEffect(() => {
     if (id !== "add") {
       getMovie(id).then((r) => {
@@ -63,25 +54,18 @@ const MovieEdit = () => {
   }, [id]);
   return (
     <div className="movieUpdateInput">
-      {/* <input
-        type="text"
-        placeholder="Title"
-        value={title}
-        onChange={(e) => setTitle(e.target.value)}
-      />
-      <input
-        type="number"
-        placeholder="Title"
-        value={year}
-        onChange={(e) => setYear(e.target.value)}
-      />
-      <Button onClick={() => onSave()}>Save</Button> */}
-      <Form>
+      <Form onSubmit={handleSubmit(onSubmit, onError)}>
         <Form.Group controlId="formBasicUsername">
           <Form.Label>Director</Form.Label>
           <Form.Control
             type="text"
             placeholder="Enter Director"
+            {...register("directorName", {
+              required: {
+                value: true,
+                message: "Required field !"
+              }
+            })}
             value={formData?.directorName}
             onChange={(e) =>
               setFormData((prevState) => {
@@ -92,12 +76,19 @@ const MovieEdit = () => {
               })
             }
           />
+          {errors?.directorName?.message ? <Alert variant="danger">Required field</Alert> : null}
         </Form.Group>
         <Form.Group controlId="formBasicUsername">
           <Form.Label>Duration</Form.Label>
           <Form.Control
             type="number"
             placeholder="Enter Duration"
+            {...register("duration", {
+              required: {
+                value: true,
+                message: "Required field !"
+              }
+            })}
             value={formData?.duration}
             onChange={(e) =>
               setFormData((prevState) => {
@@ -108,12 +99,20 @@ const MovieEdit = () => {
               })
             }
           />
+
+          {errors?.duration?.message ? <Alert variant="danger">Required field</Alert> : null}
         </Form.Group>
         <Form.Group controlId="formBasicUsername">
           <Form.Label>Name</Form.Label>
           <Form.Control
             type="text"
             placeholder="Enter Name"
+            {...register("name", {
+              required: {
+                value: true,
+                message: "Required field !"
+              }
+            })}
             value={formData?.name}
             onChange={(e) =>
               setFormData((prevState) => {
@@ -123,13 +122,21 @@ const MovieEdit = () => {
                 };
               })
             }
+
           />
+          <Alert variant="danger" >{errors?.name?.message}</Alert >
         </Form.Group>
         <Form.Group controlId="formBasicUsername">
           <Form.Label>Rating</Form.Label>
           <Form.Control
             type="number"
             placeholder="Enter rating"
+            {...register("rating", {
+              required: {
+                value: true,
+                message: "Required field !"
+              }
+            })}
             value={formData?.rating}
             onChange={(e) =>
               setFormData((prevState) => {
@@ -140,12 +147,19 @@ const MovieEdit = () => {
               })
             }
           />
+          {errors?.rating?.message ? <Alert variant="danger">Required field</Alert> : null}
         </Form.Group>
         <Form.Group controlId="formBasicUsername">
           <Form.Label>Writer Name</Form.Label>
           <Form.Control
             type="text"
             placeholder="Enter Writer Name"
+            {...register("writerName", {
+              required: {
+                value: true,
+                message: "Required field !"
+              }
+            })}
             value={formData?.writerName}
             onChange={(e) =>
               setFormData((prevState) => {
@@ -156,9 +170,10 @@ const MovieEdit = () => {
               })
             }
           />
+          {errors?.writerName?.message ? <Alert variant="danger">Required field</Alert> : null}
         </Form.Group>
 
-        <Button variant="primary" type="submit" onClick={(e) => onSubmit(e)}>
+        <Button variant="primary" type="submit">
           Add
         </Button>
       </Form>

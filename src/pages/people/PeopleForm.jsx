@@ -1,34 +1,18 @@
 import React, {
   useState,
-  // useContext
+
   useEffect,
 } from "react";
-// import PeopleData from "../../context/peopleContext/PeopleData";
+
 import Button from "react-bootstrap/Button";
 import "./style/PeopleStyle.css";
 import { useHistory, useParams } from "react-router";
 import { createPerson, updatePerson, getPerson } from "../../services/people";
 import Form from "react-bootstrap/Form";
 import Col from "react-bootstrap/Col";
-// const PeopleForm = ({ returnToGrid, data }) => {
-//   const { dispatch } = useContext(PeopleData);
-//   const [name, setName] = useState(data?.name ? data?.name : "");
-//   const [surname, setSurname] = useState(data?.surname ? data?.surname : "");
-//   const [age, setAge] = useState(data?.age ? data?.age : 1990);
-//   const onSave = () => {
-//     if (data?.id) {
-//       dispatch({
-//         type: "edit",
-//         data: { id: data?.id, name: name, surname: surname, age: age },
-//       });
-//     } else {
-//       dispatch({
-//         type: "add",
-//         data: { name: name, surname: surname, age: age },
-//       });
-//     }
-//     returnToGrid();
-//   };
+import { useForm } from 'react-hook-form'
+import Alert from 'react-bootstrap/Alert'
+
 const initialData = {
   id: 0,
   firstName: "",
@@ -39,11 +23,12 @@ const initialData = {
   gender: "",
 };
 const PeopleEdit = () => {
+  const { register, handleSubmit, formState: { errors } } = useForm();
   const { id } = useParams();
   const [formData, setFormData] = useState({});
   const history = useHistory();
-  const onSubmit = (e) => {
-    e.preventDefault();
+  const onSubmit = () => {
+
     if (id !== "add") {
       updatePerson(formData)
         .then((r) => {
@@ -63,6 +48,9 @@ const PeopleEdit = () => {
         });
     }
   };
+  const onError = (errors) => {
+    console.log(errors)
+  }
   useEffect(() => {
     if (id !== "add") {
       getPerson(id).then((r) => {
@@ -73,31 +61,19 @@ const PeopleEdit = () => {
   }, [id]);
   return (
     <div className="peopleUpdateInput">
-      {/* <input
-        type="text"
-        placeholder="Name"
-        value={name}
-        onChange={(e) => setName(e.target.value)}
-      />
-      <input
-        type="text"
-        placeholder="Surname"
-        value={surname}
-        onChange={(e) => setSurname(e.target.value)}
-      />
-      <input
-        type="number"
-        placeholder="Title"
-        value={age}
-        onChange={(e) => setAge(e.target.value)}
-      />
-      <Button onClick={() => onSave()}>Save</Button> */}
-      <Form>
+
+      <Form onSubmit={handleSubmit(onSubmit, onError)}>
         <Form.Group controlId="formBasicUsername">
           <Form.Label>Age</Form.Label>
           <Form.Control
             type="number"
             placeholder="Enter age"
+            {...register("age", {
+              required: {
+                value: true,
+                message: "Required field !"
+              }
+            })}
             value={formData?.age}
             onChange={(e) =>
               setFormData((prevState) => {
@@ -108,11 +84,18 @@ const PeopleEdit = () => {
               })
             }
           />
+          {errors?.age?.message ? <Alert variant="danger">Required field</Alert> : null}
           <Form.Group controlId="formBasicUsername">
             <Form.Label>Birth date</Form.Label>
             <Form.Control
               type="date"
               placeholder="Enter birth date"
+              {...register("dateOfBirth", {
+                required: {
+                  value: true,
+                  message: "Required field !"
+                }
+              })}
               value={formData?.dateOfBirth}
               onChange={(e) =>
                 setFormData((prevState) => {
@@ -124,11 +107,18 @@ const PeopleEdit = () => {
               }
             />
           </Form.Group>
+          {errors?.dateOfBirth?.message ? <Alert variant="danger">Required field</Alert> : null}
           <Form.Group controlId="formBasicUsername">
             <Form.Label>Name</Form.Label>
             <Form.Control
               type="text"
               placeholder="Enter first name"
+              {...register("firstName", {
+                required: {
+                  value: true,
+                  message: "Required field !"
+                }
+              })}
               value={formData?.firstName}
               onChange={(e) =>
                 setFormData((prevState) => {
@@ -139,12 +129,19 @@ const PeopleEdit = () => {
                 })
               }
             />
+            {errors?.firstName?.message ? <Alert variant="danger">Required field</Alert> : null}
           </Form.Group>
           <Form.Group as={Col} controlId="formGridState">
             <Form.Label>Gender</Form.Label>
             <Form.Control
               as="select"
               defaultValue="Choose..."
+              {...register("gender", {
+                required: {
+                  value: true,
+                  message: "Required field !"
+                }
+              })}
               value={formData?.gender}
               onChange={(e) =>
                 setFormData((prevState) => {
@@ -159,11 +156,18 @@ const PeopleEdit = () => {
               <option>FEMALE</option>
             </Form.Control>
           </Form.Group>
+          {errors?.gender?.message ? <Alert variant="danger">Required field</Alert> : null}
           <Form.Group controlId="formBasicUsername">
             <Form.Label>Last Name</Form.Label>
             <Form.Control
               type="text"
               placeholder="Enter last name"
+              {...register("lastName", {
+                required: {
+                  value: true,
+                  message: "Required field !"
+                }
+              })}
               value={formData?.lastName}
               onChange={(e) =>
                 setFormData((prevState) => {
@@ -175,12 +179,19 @@ const PeopleEdit = () => {
               }
             />
           </Form.Group>
+          {errors?.lastName?.message ? <Alert variant="danger">Required field</Alert> : null}
         </Form.Group>
         <Form.Group controlId="formBasicUsername">
           <Form.Label>Occupation</Form.Label>
           <Form.Control
             type="text"
             placeholder="Enter occupation"
+            {...register("occupation", {
+              required: {
+                value: true,
+                message: "Required field !"
+              }
+            })}
             value={formData?.occupation}
             onChange={(e) =>
               setFormData((prevState) => {
@@ -192,8 +203,8 @@ const PeopleEdit = () => {
             }
           />
         </Form.Group>
-
-        <Button variant="primary" type="submit" onClick={(e) => onSubmit(e)}>
+        {errors?.occupation?.message ? <Alert variant="danger">Required field</Alert> : null}
+        <Button variant="primary" type="submit" >
           Add
         </Button>
       </Form>
