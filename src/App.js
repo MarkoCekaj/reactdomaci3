@@ -18,11 +18,11 @@ function App() {
       <Switch>
         <Route exact path="/" component={Login}></Route>
         <PrivateRoute path="/books" exact component={Books} isPrivate />
-        <PrivateRoute path="/books/:id" exact component={BooksForm} />
+        <PrivateRoute path="/books/:id" exact component={BooksForm} isPrivate />
         <PrivateRoute path="/movies" exact component={Movies} isPrivate />
-        <PrivateRoute path="/movies/:id" exact component={MoviesForm} />
+        <PrivateRoute path="/movies/:id" exact component={MoviesForm} isPrivate />
         <PrivateRoute path="/people" exact component={People} isPrivate />
-        <PrivateRoute path="/people/:id" exact component={PeopleForm} />
+        <PrivateRoute path="/people/:id" exact component={PeopleForm} isPrivate />
         <PrivateRoute path="/register" exact component={Register} isPrivate />
       </Switch>
     </div>
