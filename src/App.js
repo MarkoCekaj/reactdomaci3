@@ -23,7 +23,7 @@ function App() {
         <PrivateRoute path="/movies/:id" exact component={MoviesForm} />
         <PrivateRoute path="/people" exact component={People} isPrivate />
         <PrivateRoute path="/people/:id" exact component={PeopleForm} />
-        <PrivateRoute path="/register" exact component={Register} />
+        <PrivateRoute path="/register" exact component={Register} isPrivate />
       </Switch>
     </div>
 
