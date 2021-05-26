@@ -3,8 +3,7 @@ import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import { useHistory } from "react-router-dom";
 import { login } from "../../services/account";
-import { Route, Link } from 'react-router-dom'
-import Register from "../register/Register";
+import { Link } from 'react-router-dom'
 
 
 const Login = () => {
