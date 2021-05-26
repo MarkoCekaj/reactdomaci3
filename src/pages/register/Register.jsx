@@ -1,10 +1,9 @@
 import React, { useState } from 'react'
 import { useHistory } from 'react-router';
-import { authorities, register } from '../../services/account';
+import { registerApi } from '../../services/account';
 import Form from 'react-bootstrap/Form'
 import { useForm } from 'react-hook-form'
 import Button from 'react-bootstrap/Button'
-import Alert from 'react-bootstrap/Alert'
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
 
@@ -16,7 +15,7 @@ const Register = () => {
     })
     const formOptions = { resolver: yupResolver(validationSchema) }
     const { register, handleSubmit, formState } = useForm(formOptions);
-    const { errors } = formState
+    const { errors } = formState;
 
     const history = useHistory()
     const [registerData, setRegisterData] = useState({
@@ -27,8 +26,7 @@ const Register = () => {
     const [errorMessage, setErrorMessage] = useState("");
 
     const onSubmit = (e) => {
-        e.preventDefault();
-        register(registerData).then(function (response) {
+        registerApi(registerData).then(function (response) {
             console.log(response);
             history.push("/")
         })

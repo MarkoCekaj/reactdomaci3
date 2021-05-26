@@ -6,7 +6,7 @@ export const login = (data) => {
     data: data,
   });
 };
-export const register = (data) => {
+export const registerApi = (data) => {
   return axios({
     method: "post",
     url: "http://localhost:8080/api/register",
