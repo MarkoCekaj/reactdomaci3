@@ -31,7 +31,7 @@ const PeopleEdit = () => {
   const { register, handleSubmit, formState } = useForm(formOptions);
   const { errors } = formState;
   const { id } = useParams();
-  const [formData, setFormData] = useState({});
+  const [formData, setFormData] = useState(initialData);
   const history = useHistory();
   const onSubmit = () => {
 
