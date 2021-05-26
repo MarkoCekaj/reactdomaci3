@@ -48,7 +48,7 @@ const Movies = () => {
   //paginate
   const [movies, setMovies] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [moviesPerPage] = useState(10);
+  const [moviesPerPage] = useState(50);
 
   useEffect(() => {
     const fetchMovies = async () => {

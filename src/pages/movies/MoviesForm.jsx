@@ -7,6 +7,7 @@ import "./style/MoviesStyle.css";
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
 import { addMovie, editMovie, getMovie } from "../../services/movies";
+import { useQueryClient, useMutation } from 'react-query'
 const initialData = {
   id: 0,
   directorName: "",
@@ -15,7 +16,18 @@ const initialData = {
   rating: "",
   writerName: "",
 };
+
 const MovieEdit = () => {
+  const mutationEdit = useMutation((data) => editMovie(data), {
+    onSuccess: () => {
+      history.push('/movies')
+    },
+  });
+  const mutationAdd = useMutation((data) => addMovie(data), {
+    onSuccess: () => {
+      history.push('/movies')
+    },
+  });
   const validationSchema = Yup.object().shape({
     directorName: Yup.string().required("Director Name is required"),
     duration: Yup.number().required("Duration is required"),
@@ -31,18 +43,10 @@ const MovieEdit = () => {
   const history = useHistory();
   const onSubmit = () => {
     if (id !== "add") {
-      editMovie(formData)
-        .then((r) => {
-          history.push("/movies");
-        })
-        .catch((r) => {
-          console.log(r?.response?.data);
-        });
+      mutationEdit.mutate(formData)
     } else {
       delete formData.id;
-      addMovie(formData).then((r) => {
-        history.push("/movies");
-      });
+      mutationAdd.mutate(formData)
     }
   };
   const onError = (errors) => {
@@ -59,7 +63,7 @@ const MovieEdit = () => {
   return (
     <div className="movieUpdateInput">
       <Form onSubmit={handleSubmit(onSubmit, onError)}>
-        <Form.Group controlId="formBasicUsername">
+        <Form.Group controlId="formBasicName">
           <Form.Label>Director</Form.Label>
           <Form.Control
             type="text"
@@ -98,7 +102,7 @@ const MovieEdit = () => {
 
           <div className="invalid-feedback">{errors.duration?.message}</div>
         </Form.Group>
-        <Form.Group controlId="formBasicUsername">
+        <Form.Group controlId="formBasicNew">
           <Form.Label>Name</Form.Label>
           <Form.Control
             type="text"
@@ -118,7 +122,7 @@ const MovieEdit = () => {
           />
           <div className="invalid-feedback">{errors.name?.message}</div>
         </Form.Group>
-        <Form.Group controlId="formBasicUsername">
+        <Form.Group controlId="formBasicNew2">
           <Form.Label>Rating</Form.Label>
           <Form.Control
             type="number"
@@ -137,7 +141,7 @@ const MovieEdit = () => {
           />
           <div className="invalid-feedback">{errors.rating?.message}</div>
         </Form.Group>
-        <Form.Group controlId="formBasicUsername">
+        <Form.Group controlId="formBasicNew3">
           <Form.Label>Writer Name</Form.Label>
           <Form.Control
             type="text"
